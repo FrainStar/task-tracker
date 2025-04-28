@@ -1,0 +1,29 @@
+@import "../../node_modules/tailwindcss";
+
+
+
+:root {
+    background: #FFDDD2;
+    --primary: #83C5BE;
+    --primary-light: #A29BFE;
+    --secondary: #00B894;
+    --background: #F5F6FA;
+    --card-bg: #FFFFFF;
+    --text-primary: #2D3436;
+    --text-secondary: #636E72;
+    --text-light: #B2BEC3;
+    --danger: #D63031;
+    --warning: #FDCB6E;
+    --success: #00B894;
+    --border: #DFE6E9;
+}
+
+[data-theme="dark"] {
+    --primary: #6C5CE7;
+    --primary-light: #A29BFE;
+    --background: #2D3436;
+    --card-bg: #3E4649;
+    --text-primary: #F5F6FA;
+    --text-secondary: #B2BEC3;
+    --border: #636E72;
+}
