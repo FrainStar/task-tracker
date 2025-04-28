@@ -2,11 +2,27 @@ import { useState, useEffect } from 'react';
 import { Task } from '../сomponents/types/task';
 import * as taskService from '../utils/taskService';
 
+/**
+ * Custom hook for managing tasks
+ * @returns {Object} Task management utilities and state
+ * @property {Task[]} tasks - List of tasks
+ * @property {boolean} loading - Loading state
+ * @property {string | null} error - Error message
+ * @property {Function} addTask - Add new task
+ * @property {Function} toggleTask - Toggle task completion status
+ * @property {Function} removeTask - Delete task
+ * @property {Function} editTask - Update task
+ * @property {Function} refreshTasks - Reload tasks from server
+ */
 const useTasks = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Load tasks from server
+     * @async
+     */
     const loadTasks = async () => {
         try {
             setLoading(true);
@@ -21,8 +37,16 @@ const useTasks = () => {
         }
     };
 
+    /**
+     * Add new task
+     * @async
+     * @param {Omit<Task, 'id'>} taskData - Task data without id
+     * @throws {Error} When API request fails
+     */
     const addTask = async (taskData: Omit<Task, 'id'>) => {
         try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             const newTask = await taskService.createTask(taskData);
             setTasks(prev => [...prev, newTask]);
         } catch (err) {
@@ -31,6 +55,12 @@ const useTasks = () => {
         }
     };
 
+    /**
+     * Toggle task completion status
+     * @async
+     * @param {string} id - Task ID
+     * @throws {Error} When API request fails
+     */
     const toggleTask = async (id: string) => {
         try {
             const updatedTask = await taskService.toggleTaskCompletion(id);
@@ -43,6 +73,12 @@ const useTasks = () => {
         }
     };
 
+    /**
+     * Delete task
+     * @async
+     * @param {string} id - Task ID
+     * @throws {Error} When API request fails
+     */
     const removeTask = async (id: string) => {
         try {
             await taskService.deleteTask(id);
@@ -53,6 +89,13 @@ const useTasks = () => {
         }
     };
 
+    /**
+     * Update task
+     * @async
+     * @param {string} id - Task ID
+     * @param {Partial<Task>} updates - Task fields to update
+     * @throws {Error} When API request fails
+     */
     const editTask = async (id: string, updates: Partial<Task>) => {
         try {
             const updatedTask = await taskService.updateTask(id, updates);
@@ -65,6 +108,7 @@ const useTasks = () => {
         }
     };
 
+    // Load tasks on component mount
     useEffect(() => {
         loadTasks();
     }, []);

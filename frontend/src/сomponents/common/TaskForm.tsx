@@ -1,5 +1,5 @@
-// TaskForm.tsx
 'use client';
+
 import { useState } from 'react';
 import { Task } from '../types/task';
 import { format, parseISO } from 'date-fns';
@@ -8,6 +8,13 @@ interface TaskFormProps {
     onSubmit: (task: Omit<Task, 'id'>) => void;
 }
 
+/**
+ * TaskForm компонент для создания новой задачи.
+ * @component
+ * @param {TaskFormProps} props - Свойства компонента.
+ * @param {(task: Omit<Task, 'id'>) => void} props.onSubmit - Функция, вызываемая при отправке формы с данными задачи.
+ * @returns {JSX.Element} Форма для ввода данных задачи.
+ */
 const TaskForm = ({ onSubmit }: TaskFormProps) => {
     const [formData, setFormData] = useState<Omit<Task, 'id'>>({
         title: '',
@@ -21,6 +28,10 @@ const TaskForm = ({ onSubmit }: TaskFormProps) => {
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    /**
+     * Валидирует форму на наличие обязательных полей и логики дат.
+     * @returns {boolean} true, если форма валидна, иначе false.
+     */
     const validateForm = (): boolean => {
         const newErrors: Record<string, string> = {};
 
@@ -41,6 +52,10 @@ const TaskForm = ({ onSubmit }: TaskFormProps) => {
         return Object.keys(newErrors).length === 0;
     };
 
+    /**
+     * Обрабатывает изменения текстовых, текстовых областей и селектов.
+     * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e - Событие изменения.
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -49,6 +64,11 @@ const TaskForm = ({ onSubmit }: TaskFormProps) => {
         }));
     };
 
+    /**
+     * Обрабатывает изменения даты в полях начала и окончания задачи.
+     * @param {'startDate' | 'dueDate'} name - Имя поля даты.
+     * @param {string} value - Новое значение даты.
+     */
     const handleDateChange = (name: 'startDate' | 'dueDate', value: string) => {
         setFormData(prev => ({
             ...prev,
@@ -56,6 +76,10 @@ const TaskForm = ({ onSubmit }: TaskFormProps) => {
         }));
     };
 
+    /**
+     * Обрабатывает отправку формы, валидирует данные и передаёт их через onSubmit.
+     * @param {React.FormEvent} e - Событие отправки формы.
+     */
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
